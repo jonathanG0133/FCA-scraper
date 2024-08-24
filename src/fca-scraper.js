@@ -85,7 +85,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log(
       "Clicking 'Show all results' to bring up large list of firms\nLoading for a few seconds ...\n"
     );
-    //await page.locator(showAllFirmsInListSelector).click();
+    await page.locator(showAllFirmsInListSelector).click();
   }
 
   async function saveAllFirmDetailLinksToArray() {
@@ -100,7 +100,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log("Total number of results:", totalAmountOfFirmsInList);
     console.log("Grabbing " + totalAmountOfFirmsInList + " links\n");
 
-    for (let i = 0; i < 2; i++) {
+    for (let i = 0; i < totalAmountOfFirmsInList; i++) {
       // // // - - - Amount of firms to scrape
       const firmLinkSelector = `#appointed-rep-table-pagination-captured-table-${i}-cell-0-link`;
       try {
