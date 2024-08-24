@@ -41,8 +41,8 @@ const phoneSelector =
 const emailSelector =
   "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div.slds-grid.slds-wrap.gutters-large.gutters-medium_none > div.slds-col.slds-size_1-of-1.slds-medium-size_6-of-12.slds-p-around_none.slds-p-right_small > div > div > div:nth-child(3) > p";
 const firmRefNumberSelector =
-  "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div:nth-child(3) > div > div > div > p";
-const typeSelector =
+  "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div.slds-grid.slds-wrap.gutters-large.gutters-medium_none > div:nth-child(3) > div > div > div:nth-child(1) > p";
+const typeSelector = 
   "#who-is-this-status-content > div > div:nth-child(1) > div > div > div > p";
 const agentStatusSelector =
   "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(2)";
@@ -85,7 +85,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log(
       "Clicking 'Show all results' to bring up large list of firms\nLoading for a few seconds ...\n"
     );
-    await page.locator(showAllFirmsInListSelector).click();
+    //await page.locator(showAllFirmsInListSelector).click();
   }
 
   async function saveAllFirmDetailLinksToArray() {
@@ -100,7 +100,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log("Total number of results:", totalAmountOfFirmsInList);
     console.log("Grabbing " + totalAmountOfFirmsInList + " links\n");
 
-    for (let i = 0; i < totalAmountOfFirmsInList; i++) {
+    for (let i = 0; i < 2; i++) {
       // // // - - - Amount of firms to scrape
       const firmLinkSelector = `#appointed-rep-table-pagination-captured-table-${i}-cell-0-link`;
       try {
