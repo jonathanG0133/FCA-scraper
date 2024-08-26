@@ -1,4 +1,6 @@
-npm start
+stand in project main folder directory 
+npm install to install dependencies
+npm start to run
 
 2 seconds per page ... 1400+ pages available when scraper was made 2024-08-23.
 

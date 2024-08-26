@@ -46,6 +46,8 @@ const typeSelector =
   "#who-is-this-status-content > div > div:nth-child(1) > div > div > div > p";
 const agentStatusSelector =
   "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(2)";
+  const dateSinceStatusSelector =
+    "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(3)";
 
 // Occasionally occurs in firm details
 const registeredCompanyNumberSelector =
@@ -85,7 +87,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log(
       "Clicking 'Show all results' to bring up large list of firms\nLoading for a few seconds ...\n"
     );
-    await page.locator(showAllFirmsInListSelector).click();
+    //await page.locator(showAllFirmsInListSelector).click();
   }
 
   async function saveAllFirmDetailLinksToArray() {
@@ -97,10 +99,10 @@ export default async function scrapeDetailsAboutAllFirms() {
       resultText.match(/out of (\d+)/)[1],
       10
     );
-    console.log("Total number of results:", totalAmountOfFirmsInList);
+    console.log("Total number of firms in the list:", totalAmountOfFirmsInList);
     console.log("Grabbing " + totalAmountOfFirmsInList + " links\n");
 
-    for (let i = 0; i < totalAmountOfFirmsInList; i++) {
+    for (let i = 1; i < 5; i++) {
       // // // - - - Amount of firms to scrape
       const firmLinkSelector = `#appointed-rep-table-pagination-captured-table-${i}-cell-0-link`;
       try {
@@ -138,26 +140,26 @@ export default async function scrapeDetailsAboutAllFirms() {
     const worksheet = workbook.addWorksheet("Firm Details");
 
     worksheet.columns = [
-      { header: "Firm Name", key: "firmName", width: 30 },
-      { header: "Address", key: "address", width: 65 },
+      { header: "Firm Name", key: "firmName", width: 26 },
+      { header: "Address", key: "address", width: 72 },
       { header: "ZIP code", key: "zipCode", width: 15 },
       { header: "Phone", key: "phone", width: 20 },
       { header: "Email", key: "email", width: 30 },
-      { header: "Ref #", key: "refNumber", width: 20 },
+      { header: "Ref #", key: "refNumber", width: 12 },
       {
         header: "Registered company number",
         key: "registeredCompanyNumber",
-        width: 40,
+        width: 34,
       },
-      { header: "Type", key: "type", width: 20 },
-      { header: "Agent Status", key: "agentStatus", width: 20 },
+      { header: "Type", key: "type", width: 10 },
+      { header: "Agent Status", key: "agentStatus", width: 27 },
     ];
 
     worksheet.getRow(1).font = {
-      name: "Arial", // Font type
-      bold: true, // Bold
-      size: 13, // Font size
-      underline: true, // Underline
+      name: "Arial", 
+      bold: true, 
+      size: 13, 
+      underline: true, 
     };
 
     worksheet.views = [
@@ -170,7 +172,7 @@ export default async function scrapeDetailsAboutAllFirms() {
       },
     ];
 // --------------------------------------------------------------------------
-    console.log(". . : : Scraping start : : . .");
+    console.log(". . : : Scraping start : : . . \n");
 
     for (let i = 0; i < hrefArray.length; i++) {
       const href = hrefArray[i];
@@ -182,7 +184,7 @@ export default async function scrapeDetailsAboutAllFirms() {
           continue;
         }
 
-        console.log(`Navigating to ${href}`);
+        console.log(`${i}: Navigating to ${href}`);
         await page.goto(href, { waitUntil: "networkidle0" });
 
         // Scrape data
@@ -228,6 +230,11 @@ export default async function scrapeDetailsAboutAllFirms() {
           return element ? element.textContent.trim() : "-";
         }, agentStatusSelector);
 
+        const dateSinceStatus = await page.evaluate((selector) => {
+          const element = document.querySelector(selector);
+          return element ? element.textContent.trim() : ""
+        }, dateSinceStatusSelector);
+        
         const registeredCompanyNumber = await page.evaluate((selector) => {
           const element = document.querySelector(selector);
           if (element) {
@@ -247,7 +254,7 @@ export default async function scrapeDetailsAboutAllFirms() {
           firmRefNumber,
           registeredCompanyNumber,
           type,
-          agentStatus,
+          agentStatus + " " + dateSinceStatus,
         ]);
       } catch (error) {
         console.error(`Error processing ${href}:`, error);
@@ -256,7 +263,7 @@ export default async function scrapeDetailsAboutAllFirms() {
 
     await workbook.xlsx.writeFile(filePath);
     console.log(
-      `. . : : Done scraping : : . .\n \n Excel file saved to: ${filePath}`
+      `\n . . : : Done scraping : : . .\n \n Excel file saved to: ${filePath}\n`
     );
 
     await browser.close();
