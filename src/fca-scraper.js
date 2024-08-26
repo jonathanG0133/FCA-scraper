@@ -42,14 +42,14 @@ const emailSelector =
   "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div.slds-grid.slds-wrap.gutters-large.gutters-medium_none > div.slds-col.slds-size_1-of-1.slds-medium-size_6-of-12.slds-p-around_none.slds-p-right_small > div > div > div:nth-child(3) > p";
 const firmRefNumberSelector =
   "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div.slds-grid.slds-wrap.gutters-large.gutters-medium_none > div:nth-child(3) > div > div > div:nth-child(1) > p";
-const typeSelector = 
+const typeSelector =
   "#who-is-this-status-content > div > div:nth-child(1) > div > div > div > p";
 const agentStatusSelector =
   "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(2)";
-  const dateSinceStatusSelector =
-    "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(3)";
+const dateSinceStatusSelector =
+  "#who-is-this-status-content > div > div:nth-child(2) > div > div > div > p:nth-child(3)";
 
-// Occasionally occurs in firm details
+// Occasionally appears in firm details
 const registeredCompanyNumberSelector =
   "#who-is-this-details-content > div.stack.stack--direct.stack--medium > div.slds-grid.slds-wrap.gutters-large.gutters-medium_none > div:nth-child(3) > div > div > div:nth-child(2) > a";
 
@@ -87,7 +87,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log(
       "Clicking 'Show all results' to bring up large list of firms\nLoading for a few seconds ...\n"
     );
-    //await page.locator(showAllFirmsInListSelector).click();
+    await page.locator(showAllFirmsInListSelector).click();
   }
 
   async function saveAllFirmDetailLinksToArray() {
@@ -102,8 +102,7 @@ export default async function scrapeDetailsAboutAllFirms() {
     console.log("Total number of firms in the list:", totalAmountOfFirmsInList);
     console.log("Grabbing " + totalAmountOfFirmsInList + " links\n");
 
-    for (let i = 1; i < 5; i++) {
-      // // // - - - Amount of firms to scrape
+    for (let i = 0; i < totalAmountOfFirmsInList; i++) { // // // - - - Amount of firms to scrape
       const firmLinkSelector = `#appointed-rep-table-pagination-captured-table-${i}-cell-0-link`;
       try {
         const firmLinkElement = await page.$(firmLinkSelector);
@@ -124,7 +123,7 @@ export default async function scrapeDetailsAboutAllFirms() {
   }
 
   async function traverseLinksAndScrapeDetails() {
-          //                   EXCEL AND FILE PATHING - - - - - - - - - - - - - - -
+    //                   EXCEL AND FILE PATHING - - - - - - - - - - - - - - -
     const today = new Date();
     const dateStr = today.toISOString().split("T")[0];
     const desktopPath = path.join(os.homedir(), "Desktop");
@@ -156,10 +155,10 @@ export default async function scrapeDetailsAboutAllFirms() {
     ];
 
     worksheet.getRow(1).font = {
-      name: "Arial", 
-      bold: true, 
-      size: 13, 
-      underline: true, 
+      name: "Arial",
+      bold: true,
+      size: 13,
+      underline: true,
     };
 
     worksheet.views = [
@@ -171,7 +170,7 @@ export default async function scrapeDetailsAboutAllFirms() {
         activeCell: "A2",
       },
     ];
-// --------------------------------------------------------------------------
+    // --------------------------------------------------------------------------
     console.log(". . : : Scraping start : : . . \n");
 
     for (let i = 0; i < hrefArray.length; i++) {
@@ -188,7 +187,8 @@ export default async function scrapeDetailsAboutAllFirms() {
         await page.goto(href, { waitUntil: "networkidle0" });
 
         // Scrape data
-        const firmName = await page.evaluate((selector) => { // Not super happy with violating DRY but works
+        const firmName = await page.evaluate((selector) => {
+          // Not super happy with violating DRY but works
           const element = document.querySelector(selector);
           return element ? element.textContent.trim() : "-";
         }, firmNameSelector);
@@ -232,9 +232,9 @@ export default async function scrapeDetailsAboutAllFirms() {
 
         const dateSinceStatus = await page.evaluate((selector) => {
           const element = document.querySelector(selector);
-          return element ? element.textContent.trim() : ""
+          return element ? element.textContent.trim() : "";
         }, dateSinceStatusSelector);
-        
+
         const registeredCompanyNumber = await page.evaluate((selector) => {
           const element = document.querySelector(selector);
           if (element) {
@@ -268,7 +268,6 @@ export default async function scrapeDetailsAboutAllFirms() {
 
     await browser.close();
   }
-
 }
 
 function parseAddressHtml(inputString) {
