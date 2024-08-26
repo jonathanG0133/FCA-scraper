@@ -1,4 +1,4 @@
-Test Run Showcase Video
+Test Run Showcase Video (HD video settings available)
 https://1drv.ms/v/c/95a2a4e5d05503b0/EcphUHbfYnFGnf259KBSRFcBBycu0p6A1OVN3eIbsDzYyw?e=izTEGx  
 
 
