@@ -10,14 +10,19 @@ stand in project main folder directory
 
 Not multi-threaded   -   2 seconds per page ... 1400+ pages available when scraper was made 2024-08-23.
 
-Folder will appear on desktop, Excel-file will appear inside folder when scraper is finished.
+Folder "FCA Scraper" will appear on desktop, '.xlsx' Excel file will appear inside desktop folder once script is completely finished.
 
-IF you run the scraper twice on the same day it will override the file because the file name will be the same
-(if you change amount of firms to scrape again, but with a new amount set - remember to change the file name)
-              (the Excel file you plan to override needs to be closed if you are doing this)
+----
 
 
+IF you run the scraper twice on the same day, it will override the file because the file name will be the same due to using dates to differentiate the Excel sheet names.
 
-- Jonathan G
+=> So if you want to change amount of firms being scraped by the script, but also keep the old Excel sheet retrieved the same day - remember to change the file name for the sheet that already exists for todays 
+   date
+   (the Excel file you plan to override needs to be closed when the script is about to finish if you are doing this)
+
+
+
+     - Jonathan G
 
  
