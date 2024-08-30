@@ -3,10 +3,10 @@ https://1drv.ms/v/c/95a2a4e5d05503b0/EcphUHbfYnFGnf259KBSRFcBBycu0p6A1OVN3eIbsDz
 
 
 stand in project main folder directory 
-npm install to install dependencies
-npm start to run
+"npm install" reqiured to install package dependencies
+"npm start" to run the script
 
-2 seconds per page ... 1400+ pages available when scraper was made 2024-08-23.
+Not multi-threaded   -   2 seconds per page ... 1400+ pages available when scraper was made 2024-08-23.
 
 Folder will appear on desktop, Excel-file will appear inside folder when scraper is finished.
 
